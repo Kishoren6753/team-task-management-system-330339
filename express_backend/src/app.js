@@ -44,10 +44,21 @@ app.use(express.json());
 // Mount routes
 app.use('/', routes);
 
+const { isHttpError } = require('./utils/httpErrors');
+
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({
+  console.error(err);
+
+  if (isHttpError(err)) {
+    return res.status(err.statusCode).json({
+      status: 'error',
+      message: err.message,
+      details: err.details || undefined,
+    });
+  }
+
+  return res.status(500).json({
     status: 'error',
     message: 'Internal Server Error',
   });

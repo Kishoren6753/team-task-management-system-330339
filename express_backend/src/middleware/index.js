@@ -1,4 +1,10 @@
-// This file will export middleware as the application grows
+'use strict';
+
+// This file exports middleware as the application grows
+const { requireAuth } = require('./auth');
+const { requireProjectRole } = require('./projectAccess');
+
 module.exports = {
-  // Add your middleware here
+  requireAuth,
+  requireProjectRole,
 };
